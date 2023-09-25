@@ -20,6 +20,6 @@ sum(X,X,Z) :- !, write(Z).
 sum(X,Y,Z) :- Z1 is Z+Y, Y1 is Y-1, sum(X,Y1,Z1).
 
 % 4d)
-div(X,Y) :- Y1 is Y-1, Z is X-Y, div(X,Y1,Z).
-div(X,Y,Z):- X<Y, !, write("res="),write(Z),nl.
-div(X,Y,Z) :- Y1 is Y-1, Z1 is Z-Y, div(X,Y1,Z1).
+div(X,Y) :- div(X,Y,X,0).
+div(X,Y,W,Z) :- W<Y,!,write("Resultado="),write(Z),nl,write("Resto="),write(W).
+div(X,Y,W,Z) :- W1 is W-Y,Z1 is Z+1, div(X,Y,W1,Z1).
