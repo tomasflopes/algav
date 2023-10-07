@@ -33,7 +33,7 @@ mtf(L,R) :-
   min(L,M),
   mtf(L,M,R1),
   R = [M|R1].
-mtf([H|T],M,R) :-
+mtf([_|T],M,R) :-
   member(M,T),
   mtf(T,M,R),
   R = T.
@@ -63,3 +63,22 @@ insert(X,I,L,R) :- insert(X,I,L,R,0).
 insert(X,I,[H|T],R,I) :- R = [X|[H|T]], !.
 insert(X,I,[H|T],R,C) :- C1 is C+1, insert(X,I,T,R1,C1), R = [H|R1].
 
+% 7. (Union)
+union([],L,L).
+union([X|L1],L2,LU) :- member(X,L2), union(L1,L2,LU).
+union([X|L1],L2,[X|LU]) :- union(L1,L2,LU).
+
+% 8. (Intersection)
+intersection([],_,[]).
+intersection([X|L1],L2,[X|LI]) :- member(X,L2), !, intersection(L1,L2,LI).
+intersection([_|L1],L2,LI) :- intersection(L1,L2,LI).
+
+% 9. (Diff)
+diff([],_,[]).
+diff([H|T], L, T) :- member(H,L).
+diff(L, [H|T], T) :- member(H,L).
+diff([_,T],L,R) :- diff(T,L,R).
+
+% 10. (Flatten)
+flatten([H|T],R) :- flatten(T,R1), R = [H|R1].
+flatten([],R).
