@@ -29,15 +29,15 @@ count([_|T],P,I) :-
   I is I1+1.
 
 % 1d. (Minumum To Front)
-mtf(L,R) :- 
+mtf(L,R) :-
   min(L,M),
   mtf(L,M,R1),
   R = [M|R1].
-mtf([_|T],M,R) :-
-  member(M,T),
-  mtf(T,M,R),
-  R = T.
-mtf(L,_,L).
+mtf([H|T],M,R) :-
+  H \== M,
+  mtf(T,M,R1), !,
+  R = [H|R1].
+mtf([_|T],_,T).
 
 % 2. (Join)
 join([],L,L).
@@ -81,4 +81,4 @@ diff([_,T],L,R) :- diff(T,L,R).
 
 % 10. (Flatten)
 flatten([H|T],R) :- flatten(T,R1), R = [H|R1].
-flatten([],R).
+flatten([],_).
