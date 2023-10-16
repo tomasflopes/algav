@@ -75,10 +75,27 @@ intersection([_|L1],L2,LI) :- intersection(L1,L2,LI).
 
 % 9. (Diff)
 diff([],_,[]).
-diff([H|T], L, T) :- member(H,L).
-diff(L, [H|T], T) :- member(H,L).
-diff([_,T],L,R) :- diff(T,L,R).
+diff([H|T],L,R) :- member(H,L), diff(T,L,R).
+diff([H|T],L,[H|R]) :- diff(T,L,R), !.
 
 % 10. (Flatten)
-flatten([H|T],R) :- flatten(T,R1), R = [H|R1].
-flatten([],_).
+flatten([H|T],R) :- \+is_list(H), flatten(T,R1), !,R = [H|R1].
+flatten([H|T],R) :- join(H,T,Z), flatten(Z,R).
+flatten([],[]).
+
+% 11. (Combinations)
+% Comentário: Não dá todas as combinações porque tem em conta a ordem
+combinations(0,_,[]) :- !.
+combinations(N,[H|T],[H|R]) :-
+  N1 is N-1,
+  combinations(N1,T,R).
+combinations(N,[_|T],R) :-
+  combinations(N,T,R).
+
+% 12. (Permutação)
+perm([],[]).
+perm(L,[H|R]) :- 
+  member(H,L),
+  delete(L,H,Z),
+  perm(Z,R).
+
