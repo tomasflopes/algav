@@ -70,6 +70,8 @@ bfs(O,D,L) :-
   nei(O,N),
   bfs(O,D,N,[],L).
 bfs(O,O,_,_,[O]).
-bfs(O,D,N,V,[O|R]) :-
-  delete(N,O,N1),
+bfs(O,D,[N|NT],V,[O|R]) :-
+  liga(N,X),
+  \+member(X,V),
+  bfs(X,D,NT,[N|V],R).
 
